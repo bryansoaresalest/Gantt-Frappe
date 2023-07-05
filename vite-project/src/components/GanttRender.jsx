@@ -1,6 +1,6 @@
 import React from "react";
 import Gantt from "frappe-gantt";
-import "../../../src/index.css";
+import "./../index.css";
 
 const GanttRender = ({ tasks }) => {
   const [timeScale, setTimeScale] = React.useState("Day");
@@ -28,26 +28,25 @@ const GanttRender = ({ tasks }) => {
     });
   }, [timeScale]);
 
-  tasks.map((item, index) => {
+  function setClassColor(item, index) {
     let { status, progress } = item;
+    tasks[index].name = tasks[index].id;
 
-    if (progress == 0) {
-      tasks[index]["custom_class"] = "a-iniciar";
-      tasks[index].name = "A iniciar";
+    if (progress === 0) {
+      tasks[index].custom_class = "a-iniciar";
     }
     if ((progress > 0 && item.progress < 100) || status !== "") {
-      tasks[index]["custom_class"] = "em-andamento";
-      tasks[index].name = "Em andamento";
+      tasks[index].custom_class = "em-andamento";
     }
     if (progress === 100) {
-      tasks[index]["custom_class"] = "finalizada";
-      tasks[index].name = "Finalizada";
+      tasks[index].custom_class = "finalizada";
     }
     if (status === "pendente" && progress !== 100) {
-      tasks[index]["custom_class"] = "pendente";
-      tasks[index].name = "Pendente";
+      tasks[index].custom_class = "pendente";
     }
-  });
+  }
+
+  tasks.map((item, index) => setClassColor(item, index));
 
   return (
     <div className="ganttRenderGraphic">
